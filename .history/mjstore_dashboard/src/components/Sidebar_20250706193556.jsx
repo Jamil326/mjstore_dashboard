@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom";
 import { FaTimes } from "react-icons/fa";
-// optional if you want custom styles
+import './Sidebar.css'; // optional if you want custom styles
 
 export default function Sidebar({ closeSidebar }) {
   const links = [

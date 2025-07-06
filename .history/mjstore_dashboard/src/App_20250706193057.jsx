@@ -54,7 +54,7 @@ export default function App() {
           {/* Main Content */}
           <main className="flex-grow-1 p-3 bg-body">
             <Routes>
-              <Route path="/dashboard" element={<DashboardPage />} />
+              <Route path="/das" element={<DashboardPage />} />
               <Route path="/signup" element={<SignupPage />} />
               <Route path="/admins" element={<AdminListPage />} />
               <Route path="/products" element={<ProductsPage />} />

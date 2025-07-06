@@ -29,7 +29,7 @@ export default function App() {
     }
   }, []);
 
-  if (!user) {
+  if (user) {
     return (
       <Router>
         <Routes>

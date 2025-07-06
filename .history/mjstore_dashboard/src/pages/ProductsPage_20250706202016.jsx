@@ -32,6 +32,7 @@ export default function ProductsPage() {
 
   useEffect(() => {
     fetchProducts(page);
+    // eslint-disable-next-line
   }, [page]);
 
   const fetchProducts = async (currentPage) => {
@@ -44,9 +45,9 @@ export default function ProductsPage() {
       const productData = res.data.data.getProduct || [];
       const totalCount = res.data.data.totalCount || 0;
 
-      setProducts((prev) => [...prev, ...productData]); // ✅ FIXED
+      setProducts((prev) => [...prev, productData]);
       setTotalProducts(totalCount);
-      setHasMore((prev) => products.length + productData.length < totalCount);
+      setHasMore(productData.length > 0 && (prev => prev + productData.length) < totalCount);
       setLoading(false);
     } catch (err) {
       console.error("Failed to load products:", err);
@@ -62,7 +63,7 @@ export default function ProductsPage() {
         <span className="text-muted">Total: {totalProducts}</span>
       </div>
 
-      {/* Product Grid */}
+      {/* Product Cards */}
       <Row>
         {products.map((product, index) => {
           const isLast = index === products.length - 1;
@@ -79,11 +80,6 @@ export default function ProductsPage() {
         <div className="text-center my-4">
           <Spinner animation="border" variant="primary" />
         </div>
-      )}
-
-      {/* No More Products */}
-      {!hasMore && !loading && products.length > 0 && (
-        <div className="text-center text-muted my-3">No more products to load</div>
       )}
     </Container>
   );

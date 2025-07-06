@@ -10,24 +10,25 @@ export default function ProductsPage() {
   const [totalProducts, setTotalProducts] = useState(0);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
-  const [hasMore, setHasMore] = useState(true);
 
   const observer = useRef();
-
   const lastProductRef = useCallback(
     (node) => {
       if (loading) return;
 
       if (observer.current) observer.current.disconnect();
       observer.current = new IntersectionObserver((entries) => {
-        if (entries[0].isIntersecting && hasMore) {
+        if (
+          entries[0].isIntersecting &&
+          products.length < totalProducts
+        ) {
           setPage((prevPage) => prevPage + 1);
         }
       });
 
       if (node) observer.current.observe(node);
     },
-    [loading, hasMore]
+    [loading, products, totalProducts]
   );
 
   useEffect(() => {
@@ -42,15 +43,14 @@ export default function ProductsPage() {
       );
 
       const productData = res.data.data.getProduct || [];
-      const totalCount = res.data.data.totalCount || 0;
+      const totalCount = res.data.data.totalCount || productData.length;
 
-      setProducts((prev) => [...prev, ...productData]); // ✅ FIXED
+      setProducts((prev) => [...prev, ...productData]);
       setTotalProducts(totalCount);
-      setHasMore((prev) => products.length + productData.length < totalCount);
       setLoading(false);
     } catch (err) {
-      console.error("Failed to load products:", err);
       setLoading(false);
+      alert("Failed to load products");
     }
   };
 
@@ -62,7 +62,7 @@ export default function ProductsPage() {
         <span className="text-muted">Total: {totalProducts}</span>
       </div>
 
-      {/* Product Grid */}
+      {/* Product Cards */}
       <Row>
         {products.map((product, index) => {
           const isLast = index === products.length - 1;
@@ -79,11 +79,6 @@ export default function ProductsPage() {
         <div className="text-center my-4">
           <Spinner animation="border" variant="primary" />
         </div>
-      )}
-
-      {/* No More Products */}
-      {!hasMore && !loading && products.length > 0 && (
-        <div className="text-center text-muted my-3">No more products to load</div>
       )}
     </Container>
   );

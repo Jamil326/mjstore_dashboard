@@ -1,13 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import {
-  Container,
-  Table,
-  Card,
-  Button,
-  Pagination,
-} from "react-bootstrap";
+import { Container, Table, Card, Button, Row, Col, Pagination } from "react-bootstrap";
 import { BsBoxSeam, BsSearch } from "react-icons/bs";
 
 axios.defaults.baseURL = "https://mj-store.onrender.com/api/v1";
@@ -19,7 +13,9 @@ export default function OrdersDashboard() {
   const [page, setPage] = useState(1);
   const limit = 5;
 
-  const goToSearchPage = () => navigate("/searchpage");
+   const goToSearchPage = () => {
+    navigate("/searchpage");
+  };
 
   useEffect(() => {
     fetchOrders(page);
@@ -40,28 +36,21 @@ export default function OrdersDashboard() {
 
   return (
     <Container className="my-4">
-      <Card className="p-3 shadow-sm">
-        {/* Header Section */}
-        <div className="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3 mb-4">
-          <h4 className="text-success m-0">
-            <BsBoxSeam className="me-2" />
-            Orders Dashboard
-          </h4>
-          <div className="d-flex flex-column flex-sm-row gap-2 align-items-start align-items-sm-center">
+      <Card className="p-4 shadow-sm">
+        <div className="d-flex justify-content-between align-items-center mb-4">
+          <h3 className="text-success">
+            <BsBoxSeam className="me-2" /> Orders Dashboard
+          </h3>
+          <div className="d-flex align-items-center gap-3">
             <span className="text-muted">Total Orders: {totalOrders}</span>
-            <Button
-              variant="success"
-              onClick={goToSearchPage}
-              className="d-flex align-items-center"
-            >
+            <Button variant="success" onClick={goToSearchPage}>
               <BsSearch className="me-2" /> Find Product by ID
             </Button>
           </div>
         </div>
 
-        {/* Responsive Table */}
         <div className="table-responsive">
-          <Table bordered hover className="align-middle text-nowrap">
+          <Table bordered hover className="align-middle">
             <thead className="table-success">
               <tr>
                 <th>Order ID</th>
@@ -76,12 +65,10 @@ export default function OrdersDashboard() {
             <tbody>
               {orders.length === 0 ? (
                 <tr>
-                  <td colSpan="7" className="text-center">
-                    No orders found
-                  </td>
+                  <td colSpan="7" className="text-center">No orders found</td>
                 </tr>
               ) : (
-                orders.map((order) => (
+                orders.map(order => (
                   <tr key={order._id}>
                     <td>{order._id}</td>
                     <td>
@@ -107,11 +94,8 @@ export default function OrdersDashboard() {
                     </td>
                     <td>{order.orderStatus}</td>
                     <td>
-                      {order.shippingAddress.street},{" "}
-                      {order.shippingAddress.landmark},<br />
-                      {order.shippingAddress.city},{" "}
-                      {order.shippingAddress.state} -{" "}
-                      {order.shippingAddress.pin}
+                      {order.shippingAddress.street}, {order.shippingAddress.landmark},<br />
+                      {order.shippingAddress.city}, {order.shippingAddress.state} - {order.shippingAddress.pin}
                     </td>
                   </tr>
                 ))
@@ -120,9 +104,8 @@ export default function OrdersDashboard() {
           </Table>
         </div>
 
-        {/* Pagination */}
         {totalPages > 1 && (
-          <Pagination className="justify-content-center mt-3">
+          <Pagination className="justify-content-center">
             <Pagination.Prev
               disabled={page === 1}
               onClick={() => setPage((prev) => Math.max(prev - 1, 1))}

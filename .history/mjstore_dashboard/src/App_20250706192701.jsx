@@ -29,12 +29,12 @@ export default function App() {
     }
   }, []);
 
-  if (!user) {
+  if (user) {
     return (
       <Router>
         <Routes>
           <Route path="/login" element={<LoginPage setUser={setUser} />} />
-          <Route path="*" element={<Navigate to="/login" />} />
+          <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </Router>
     );
@@ -54,7 +54,7 @@ export default function App() {
           {/* Main Content */}
           <main className="flex-grow-1 p-3 bg-body">
             <Routes>
-              <Route path="/dashboard" element={<DashboardPage />} />
+              <Route path="/" element={<DashboardPage />} />
               <Route path="/signup" element={<SignupPage />} />
               <Route path="/admins" element={<AdminListPage />} />
               <Route path="/products" element={<ProductsPage />} />
