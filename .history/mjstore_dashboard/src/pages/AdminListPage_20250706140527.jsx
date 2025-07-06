@@ -1,0 +1,8 @@
+
+
+
+const AdminListPage = () => {
+    return (
+        d
+    )
+}
